@@ -409,7 +409,7 @@ tensorflow/tensorflow/
 └── tensorflow/core/framework/types.proto
 ```
 
-Result as below, [example](https://github.com/NhutTien0905/protos):
+Result as below:
 
 ```bash
 protos/
@@ -431,7 +431,7 @@ for p in $PROTOS; do
   python -m grpc.tools.protoc -I . --python_out=$PROTOC_OUT --grpc_python_out=$PROTOC_OUT $p
 done  
 ```
-Result as below:
+Result as below, [example](https://github.com/NhutTien0905/protos):
 
 ```bash
 protos/
