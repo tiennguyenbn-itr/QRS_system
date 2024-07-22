@@ -304,13 +304,6 @@ EOL
 
 `pad_variable_length_inputs: true`: This indicates whether variable-length inputs should be padded to ensure they have the same length within a batch.
 
-```bash
-cat > monitoring_config.txt << EOL
-prometheus_config: {
-  enable: true
-}
-EOL
-```
 - Copy to TFServer (open another terminal to do this).
 ```bash
 sudo docker cp /home/tien/Documents/ITR/itr-training-ecg-qrs_detection/model_new_2/1 tf-qrs2:/tensorflow-serving/qrs_model
