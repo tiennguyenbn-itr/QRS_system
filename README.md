@@ -1,3 +1,6 @@
+Document: [link](https://docs.google.com/document/d/1cDhvbh9GUuRWVxja_icDxWzw2yL4f5vV0a9Dl9rrGPY/edit#heading=h.42cc3piq6yw)
+Presentation: [link](https://www.canva.com/design/DAGLXLwRVe8/JunjE8kaGi4r2Sqldi9iRw/edit?utm_content=DAGLXLwRVe8&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+
 # I. Setup environment
 ### 1. Check Python version
 ```bash
