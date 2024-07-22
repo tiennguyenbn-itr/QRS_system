@@ -409,7 +409,7 @@ tensorflow/tensorflow/
 └── tensorflow/core/framework/types.proto
 ```
 
-Result as below:
+Result as below, [example](https://github.com/NhutTien0905/protos):
 
 ```bash
 protos/
