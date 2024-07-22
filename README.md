@@ -315,7 +315,7 @@ tensorflow_model_server --port=9000 --model_config_file=/tensorflow-serving/mode
 ### 2. Client with tensorflow
 - Check configuration of converted model
 ```bash
-saved_model_cli show --dir /home/tien/Documents/ITR/itr-training-ecg-qrs_detection/model_new_2/1 --all
+saved_model_cli show --dir /path/to/model/1 --all
 ```
 - Python code
 ```python
