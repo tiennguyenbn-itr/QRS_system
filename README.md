@@ -306,7 +306,7 @@ EOL
 
 - Copy to TFServer (open another terminal to do this).
 ```bash
-sudo docker cp /home/tien/Documents/ITR/itr-training-ecg-qrs_detection/model_new_2/1 tf-qrs2:/tensorflow-serving/qrs_model
+sudo docker cp /path/to/model/1 tf-qrs2:/tensorflow-serving/qrs_model
 ```
 - Start server (run in container).
 ```bash
