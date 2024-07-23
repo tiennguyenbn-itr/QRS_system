@@ -316,7 +316,114 @@ sudo docker cp /path/to/model/1 tf-qrs2:/tensorflow-serving/qrs_model
 ```bash
 tensorflow_model_server --port=9000 --model_config_file=/tensorflow-serving/model_config.txt --file_system_poll_wait_seconds=86400 --enable_batching=true --batching_parameters_file=/tensorflow-serving/batching_parameters.txt
 ```
-### 2. Client with tensorflow
+
+### 2. Build your own docker
+Prepare a directory like below:
+```bash
+folder/
+├── Dockerfile
+├── model_config.txt
+├── batching_parameters.txt
+└── qrs_model/
+    └── 1/
+        ├── assets/
+        ├── saved_model.pb
+        ├── fingerprint.pb
+        └── variables/
+            ├── variables.data-00000-of-00001
+            └── variables.index
+```
+
+Create `Dockerfile` for gpu like below:
+```bash
+# Use the specified TensorFlow Serving GPU image as the base image
+FROM tensorflow/serving:2.13.1-gpu
+
+# Create necessary directories for the model and configuration files
+RUN mkdir -p /tensorflow-serving/qrs_model
+
+# Copy your model to the TensorFlow Serving container
+COPY qrs_model/1 /tensorflow-serving/qrs_model/1
+
+# Copy the configuration files to the TensorFlow Serving container
+COPY model_config.txt /tensorflow-serving/model_config.txt
+COPY batching_parameters.txt /tensorflow-serving/batching_parameters.txt
+
+# Set environment variable to specify the model name
+ENV MODEL_NAME=qrs
+
+# Expose the gRPC port TensorFlow Serving uses
+EXPOSE 9000
+
+# Run TensorFlow Serving with the specified command
+ENTRYPOINT ["tensorflow_model_server", \
+            "--port=9000", \
+            "--model_config_file=/tensorflow-serving/model_config.txt", \
+            "--file_system_poll_wait_seconds=86400", \
+            "--enable_batching=true", \
+            "--batching_parameters_file=/tensorflow-serving/batching_parameters.txt"]
+
+```
+- Build container:
+```bash
+sudo docker build -t your-container-name .
+```
+- Run container:
+```bash
+sudo docker run --gpus all -p 9000:9000 your-container-name
+```
+
+Create `Dockerfile` for running on CPU:
+```bash
+# Use the specified TensorFlow Serving image as the base image
+FROM tensorflow/serving:2.13.1
+
+# Create necessary directories for the model and configuration files
+RUN mkdir -p /tensorflow-serving/qrs_model
+
+# Copy your model to the TensorFlow Serving container
+COPY qrs_model/1 /tensorflow-serving/qrs_model/1
+
+# Copy the configuration files to the TensorFlow Serving container
+COPY model_config.txt /tensorflow-serving/model_config.txt
+COPY batching_parameters.txt /tensorflow-serving/batching_parameters.txt
+
+# Set environment variable to specify the model name
+ENV MODEL_NAME=qrs
+
+# Expose the gRPC port TensorFlow Serving uses
+EXPOSE 9000
+
+# Run TensorFlow Serving with the specified command
+ENTRYPOINT ["tensorflow_model_server", \
+            "--port=9000", \
+            "--model_config_file=/tensorflow-serving/model_config.txt"]
+
+```
+- Build container:
+```bash
+sudo docker build -t your-container-name .
+```
+- Run container:
+```bash
+sudo docker run -p 9000:9000 your-container-name
+```
+
+Push to Dockerhub:
+- Tag the Docker Image
+```bash
+sudo docker tag your-container-name:latest user-id/your-container-name:latest
+```
+- Login
+```bash
+sudo docker login
+```
+- Push to hub
+```bash
+sudo docker push user-id/your-container-name:latest
+```
+
+### 3. Client with tensorflow
 - Check configuration of converted model
 ```bash
 saved_model_cli show --dir /path/to/model/1 --all
@@ -387,7 +494,7 @@ float_val: 5.79103667e-19
 
 `float_val`: Values of tensor output.
 
-### 3. Client without tensorflow
+### 4. Client without tensorflow
 This step does not need to use `tensorflow` and `tensorflow-serving-api`. To simplify, create new virtual environment.
 - Create new virtual environment.
 ```bash
